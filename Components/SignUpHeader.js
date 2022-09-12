@@ -19,8 +19,7 @@ function SignUnHeader() {
       <SafeAreaView>
         <View style={styles.header}>
           {/* header's left */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate('VerficationPage')}>
+          <TouchableOpacity onPress={() => navigation.navigate('MainPage')}>
             <View style={styles.headerLeft}>
               <Image
                 source={require('../assets/Images/back-icon.png')}

@@ -9,6 +9,7 @@ import MainPage from './Screens/MainPage';
 import SignUpPage from './Screens/SignUpPage';
 import Home_noStorePage from './Screens/Home-noStorePage';
 import VerficationPage from './Screens/VerficationPage';
+import OtpPage from './Screens/OtpPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,15 +21,20 @@ function App() {
           name="NormalPage"
           component={NormalPage}
           options={{headerShown: false}}
-        /> */}
+        />*/}
         <Stack.Screen
-          name="Home"
+          name="MainPage"
           component={MainPage}
           options={{headerShown: false}}
         />
         <Stack.Screen
           name="SignUpPage"
           component={SignUpPage}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OtpPage"
+          component={OtpPage}
           options={{headerShown: false}}
         />
         <Stack.Screen

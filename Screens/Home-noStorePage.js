@@ -11,7 +11,7 @@ function Home_noStorePage() {
   return (
     <View>
       <UserHeader> </UserHeader>
-      <TouchableOpacity onPress={() => navigation.navigate('..')}>
+      <TouchableOpacity onPress={() => navigation.navigate('MainPage')}>
         {/* <Text style={styles.text}>this is the no store page</Text> */}
       </TouchableOpacity>
     </View>

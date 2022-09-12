@@ -8,11 +8,11 @@ function SupermarketPage() {
   const navigation = useNavigation();
   return (
     <View>
-      <Text style={styles.text}>here should be supermarket menu</Text>
-      <Button
+      {/*<Text style={styles.text}>here should be supermarket menu</Text>
+       <Button
         title="go to Main page"
         onPress={() => navigation.navigate('MainPage')}
-      />
+      /> */}
     </View>
   );
 }

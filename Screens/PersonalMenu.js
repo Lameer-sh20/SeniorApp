@@ -8,10 +8,10 @@ function PersonalMenu() {
   const navigation = useNavigation();
   return (
     <View>
-      <Text style={styles.text}>here shoul be personal menu </Text>
+      <Text style={styles.text}>here should be personal menu </Text>
       <Button
         title="go to home page"
-        onPress={() => navigation.navigate('Home_noStorePage')}
+        onPress={() => navigation.navigate('MainPage')}
       />
     </View>
   );
