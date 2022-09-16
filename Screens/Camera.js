@@ -11,7 +11,7 @@ const Camera = () => {
       <Text style={styles.text}>here should be Camera</Text>
       <Button
         title="go to Main page"
-        onPress={() => navigation.navigate('MainPage')}
+        onPress={() => navigation.navigate('Home_noStorePage')}
       />
     </View>
   );

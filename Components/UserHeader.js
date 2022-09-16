@@ -3,7 +3,7 @@ import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import colors from '../assets/colors/Colors';
 import {useNavigation} from '@react-navigation/native';
 
-function Line() {
+function UserHeader({name}) {
   const navigation = useNavigation();
 
   return (
@@ -12,7 +12,7 @@ function Line() {
       <View style={styles.headerContent}>
         {/* location name & icon container */}
         <TouchableOpacity
-          onPress={() => navigation.navigate('...')}
+          onPress={() => navigation.navigate('StoresMenu')}
           style={styles.locationContainer}>
           <Image
             source={require('../assets/Images/location.png')}
@@ -24,9 +24,9 @@ function Line() {
         <View style={styles.name_cartContainer}>
           {/* Name Container */}
           <TouchableOpacity
-            onPress={() => navigation.navigate('...')}
+            onPress={() => navigation.navigate('PersonalMenu')}
             style={styles.nameContainer}>
-            <Text style={styles.textName}>Hello, xxxuser</Text>
+            <Text style={styles.textName}>Hello, {name}</Text>
             <Image
               source={require('../assets/Images/warning.png')}
               style={styles.imageWarning}
@@ -47,7 +47,7 @@ function Line() {
   );
 }
 
-export default Line;
+export default UserHeader;
 
 const styles = StyleSheet.create({
   container: {
@@ -55,10 +55,13 @@ const styles = StyleSheet.create({
     height: 95,
     backgroundColor: '#FCFDFF',
     width: '100%',
-    borderBottomColor: '#E7E7EB',
+    borderColor: '#E7E7EB',
     borderBottomWidth: 1.5,
+    borderLeftWidth: 1.5,
+    borderRightWidth: 1.5,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
+    borderBottomLeftWidth: 1.5,
   },
   headerContent: {
     paddingVertical: 15,

@@ -1,8 +1,8 @@
+import {View, TextInput, StyleSheet} from 'react-native';
 import React from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
 import colors from '../assets/colors/Colors';
 
-const CustomInput = ({placeholder, value, onChangeText}) => {
+const InputBox = ({placeholder, value, onChangeText, secureTextEntry}) => {
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -10,12 +10,13 @@ const CustomInput = ({placeholder, value, onChangeText}) => {
         value={value}
         onChangeText={onChangeText}
         style={styles.inputBox}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );
 };
 
-export default CustomInput;
+export default InputBox;
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -29,8 +30,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 10,
-
     borderColor: '#E7E7EB',
     borderWidth: 0.5,
+    fontFamily: 'Nunito-Bold',
+    fontSize: 16,
+    fontWeight: '400',
   },
 });

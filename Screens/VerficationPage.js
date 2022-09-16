@@ -1,97 +1,161 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TextInput,
   Alert,
   AsyncStorage,
 } from 'react-native';
 import colors from '../assets/colors/Colors';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
+
+// import components
+import SignHeader from '../Components/SignHeader';
+import InputBox from '../Components/InputBox';
+import LongButton from '../Components/LongButton';
 
 function VerficationPage() {
   const navigation = useNavigation();
   const route = useRoute();
 
-  // useEffect(() => {
-  //   setData();
-  // }, []);
+  //const {phone, name, password} = route.params;
+  //console.log(route.params.name);
+  // const phone = route.params.phone;
+  // const password = route.params.password;
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
 
-  // const setData = async () => {
-  //   if (route.params.name === null) {
-  //     AsyncStorage.sendItem('UserToken', JSON.stringify(user));
-  //     Alert.alert('Warning!', 'it is null');
-  //   } else {
-  //     try {
-  //       var user = {
-  //         name: route.params.name,
-  //         phone: route.params.phone,
-  //         password: route.params.password,
-  //         otp: route.params.otp,
-  //       };
-  //       await AsyncStorage.sendItem('UserToken', JSON.stringify(user));
-  //     Alert.alert('Done!', 'it is not null');
+  const [OTP, setOtp] = useState('');
 
-  //     } catch (error) {
-  //       console.warn(error);
+  useEffect(() => {
+    getData();
+  });
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('UserData');
+      if (value !== null) {
+        setPhone(JSON.parse(value).phone);
+        setName(JSON.parse(value).name);
+        setPassword(JSON.parse(value).password);
+        console.warn(value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+  // const getData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('UserData');
+  //     if (value !== null) {
+  //       console.warn(JSON.parse(value));
   //     }
+  //   } catch (e) {
+  //     // error reading value
   //   }
   // };
-  /*
-  const storeData = async () => {
-    await AsyncStorage.sendItem(
-      'userData',
-      JSON.stringify({
-        name: route.params.name,
-        phone: route.params.phone,
-        password: route.params.password,
-      }),
-    );
-    Alert.alert('Done!', 'it is not null');
-  };*/
+
+  // const passData = () => {
+  //   navigation.navigate('VerficationPage', {
+  //     name: name,
+  //     phone: phone,
+  //     password: password,
+  //     otp: OTP,
+  //   });
+  // };
+
+  const submitData = () => {
+    fetch('http://10.0.2.2:3000/user/verfiyOTP', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({phone, OTP}),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.status);
+        if (data.status) {
+          fetch('http://10.0.2.2:3000/user/signUp', {
+            method: 'POST', // or 'PUT'
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({name, phone, password}),
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(phone);
+              console.log(data);
+              //create local storage to store user info
+              navigation.navigate('Home_noStorePage');
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        } else {
+          Alert.alert('wrong otp');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
   return (
-    <View>
-      <Text style={styles.text}>verfication pageeeee !!!!</Text>
-      {/* <Text>{route.params.name}</Text>
-      <Text>{route.params.phone}</Text>
-      <Text>{route.params.password}</Text>
-      <Text>{route.params.otp}</Text>*/}
+    <View style={styles.pageContainer}>
+      <SignHeader
+        text="Verfication"
+        onPress={() => navigation.navigate('SignUpPage')}
+      />
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>
+          A confirmation code has been sent to your number {'\n'} Please enter
+          it below
+        </Text>
+      </View>
+      <View style={styles.inputsContainer} behavior="padding">
+        <InputBox
+          placeholder="OTP code"
+          value={OTP}
+          onChangeText={text => setOtp(text)}
+        />
+      </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('VerficationPage')}>
-          <Text style={styles.buttonText}>send OTP code</Text>
-        </TouchableOpacity>
+        <LongButton text="Countinue" onPress={submitData} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  text: {
-    fontFamily: 'Nunito-Bold',
-    color: colors.blue,
-    fontSize: 17,
+  pagecontainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  buttonContainer: {
-    width: '60%',
+  textContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
   },
-  button: {
-    backgroundColor: '#0782F9',
-    width: '100%',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: '700',
+  text: {
+    marginTop: 50,
+    textAlign: 'center',
+    justifyContent: 'center',
+
+    fontFamily: 'Nunito-Regular',
+    color: '#212429',
     fontSize: 16,
+  },
+  inputContainer: {
+    //justifyContent: 'space-evenly',
+    //marginVertical: 15,
+  },
+  buttonContainer: {
+    marginVertical: 10,
   },
 });
 export default VerficationPage;

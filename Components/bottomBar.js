@@ -7,11 +7,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //import {Icon as MaterialCommunityIcons} from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import SupermarketPage from '../Screens/Home_xSupermarketPage';
+import StorePage from '../Screens/Home_xStorePage';
 import PersonalMenu from '../Screens/PersonalMenu';
 import Camera from '../Screens/Camera';
 
-const superMarketPage = 'SupermarketPage';
+const storePage = 'StorePage';
 const personalMenu = 'PersonalMenu';
 const camera = 'Camera';
 
@@ -28,7 +28,7 @@ function BottomBar() {
           let rn = route.name;
 
           /*if route name is home, some effect happens */
-          if (rn === superMarketPage) {
+          if (rn === storePage) {
             iconName = focused ? 'md-home-sharp' : 'home-outline';
           } else if (rn === camera) {
             iconName = focused ? 'radio-button-on-sharp' : 'md-camera';
@@ -51,8 +51,8 @@ function BottomBar() {
         },
       })}>
       <Tab.Screen
-        name={superMarketPage}
-        component={SupermarketPage}
+        name={storePage}
+        component={StorePage}
         options={{headerShown: false}}
       />
       <Tab.Screen

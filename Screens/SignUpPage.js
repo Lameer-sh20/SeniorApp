@@ -9,8 +9,17 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import colors from '../assets/colors/Colors';
+import {AsyncStorage} from '@react-native-async-storage/async-storage';
+
+import Toast from 'react-native-toast-message';
+
+//import {AsyncStorage} from '@react-native-async-storage/async-storage';
+
 // import components
-import SignUnHeader from '../Components/SignUpHeader';
+import SignHeader from '../Components/SignHeader';
+import InputBox from '../Components/InputBox';
+import LongButton from '../Components/LongButton';
 
 function SignUpPage() {
   const navigation = useNavigation();
@@ -19,6 +28,26 @@ function SignUpPage() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   //functions
+  const setData = async () => {
+    if (name.length == 0 || phone.length == 0 || password.length == 0) {
+      console.warn('fill the required info');
+    } else {
+      try {
+        const user = JSON.stringify({
+          name: name,
+          phone: phone,
+          password: password,
+        });
+        //await AsyncStorage.setItem('UserData', JSON.stringify(user));
+        await AsyncStorage.setItem('UserData', user);
+        //console.warn('account created successfully!');
+        //navigation.navigate('VerficationPage');
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+  };
+
   // const passData = () => {
   //   if (name.length == 0 || phone.length == 0 || password.length == 0) {
   //     Alert.alert('Warning!', 'Please fill the required info');
@@ -34,86 +63,114 @@ function SignUpPage() {
   //     }
   //   }
   // };
+
   const submitData = () => {
-    fetch('http://10.0.2.2:3000/user/getUserByPhone', {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({phone}),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.status);
-        if (!data.status) {
-          fetch('http://10.0.2.2:3000/user/sendOTP', {
-            method: 'POST', // or 'PUT'
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({name, phone, password}),
-          })
-            .then(response => response.json())
-            .then(data => {
-              console.log(phone);
-              console.log(data.token);
-              navigation.navigate('OtpPage', {
-                name: name,
-                phone: phone,
-                password: password,
-              });
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-        } else {
-          Alert.alert('Make login');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+    if (name.length == 0 || phone.length == 0 || password.length == 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Alert!',
+        text2: 'Please fill the required information',
+        visibilityTime: 4000,
       });
+      console.warn('fill the required info');
+    } else {
+      fetch('http://10.0.2.2:3000/user/getUserByPhone', {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({phone}),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.message);
+          if (!data.status) {
+            fetch('http://10.0.2.2:3000/user/sendOTP', {
+              method: 'POST', // or 'PUT'
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({name, phone, password}),
+            })
+              .then(response => response.json())
+              .then(data => {
+                console.log(phone);
+                console.log(data.message);
+                navigation.navigate('VerficationPage');
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+          } else {
+            Toast.show({
+              type: 'error',
+              text1: 'Alert!',
+              text2: data.message,
+              visibilityTime: 4000,
+            });
+            //Alert.alert('Make login');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
   };
 
-  // const datasaved = () => {
-  //   return alert('data is Saved');
-  // };
-  //
   // actual page flow
   return (
-    <View style={styles.pagecontainer}>
-      <SignUnHeader> </SignUnHeader>
-      <Text styles={styles.text}>click arrow to next page</Text>
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="Name"
-            value={name}
-            onChangeText={text => setName(text)}
-            style={styles.inputBox}
-          />
-
-          <TextInput
-            placeholder="Phone Number"
-            value={phone}
-            onChangeText={text => setPhone(text)}
-            style={styles.inputBox}
-          />
-
-          <TextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={text => setPassword(text)}
-            style={styles.inputBox}
-            secureTextEntry={true}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={submitData}>
-            <Text style={styles.buttonText}>Login</Text>
+    <View style={styles.pageContainer}>
+      <SignHeader
+        text="Sign Up"
+        onPress={() => navigation.navigate('MainPage')}
+      />
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>
+          Please complete the following information
+        </Text>
+      </View>
+      <Toast
+        ref={ref => {
+          Toast.setRef(ref);
+        }}
+      />
+      <View style={styles.inputsContainer} behavior="padding">
+        <InputBox
+          placeholder="Name"
+          value={name}
+          onChangeText={text => setName(text)}
+        />
+        <InputBox
+          placeholder="05xxxxxxxx"
+          value={phone}
+          onChangeText={text => setPhone(text)}
+        />
+        <InputBox
+          placeholder="Password"
+          value={password}
+          onChangeText={text => setPassword(text)}
+          secureTextEntry={true}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <LongButton
+          text="Countinue"
+          onPress={() => {
+            setData();
+            submitData();
+          }}
+        />
+      </View>
+      <View>
+        <View style={styles.questionContainer}>
+          <Text style={styles.questionstext}>Already have an account? </Text>
+          <TouchableOpacity
+            style={styles.clickableContainer}
+            onPress={() => navigation.navigate('SignInPage')}>
+            <Text style={styles.coloredText}>Sign in</Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </View>
   );
 }
@@ -123,43 +180,56 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  container: {
-    flex: 2,
+  textContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
-    alignself: 'center',
-    //justifyContent: 'center',
+    marginTop: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    fontFamily: 'Nunito-Regular',
+    color: '#212429',
+    fontSize: 16,
   },
   inputContainer: {
-    width: '100%',
-    paddingHorizontal: 10,
-  },
-  inputBox: {
-    backgroundColor: 'white',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 10,
+    //justifyContent: 'space-evenly',
+    //marginVertical: 15,
   },
   buttonContainer: {
-    width: '60%',
+    marginVertical: 10,
+  },
+  questionContainer: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
   },
-  button: {
-    backgroundColor: '#0782F9',
-    width: '100%',
-    padding: 15,
-    borderRadius: 10,
+  questionstext: {
+    fontFamily: 'Nunito-Regular',
+    color: '#212429',
+    fontSize: 13,
+  },
+  clickableContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
+  coloredText: {
+    fontFamily: 'Nunito-Bold',
+    color: colors.blue,
+    fontSize: 13,
+  },
+  word: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignText: 'center',
+  },
+  wordstyle: {
+    marginVertical: 5,
+    fontFamily: 'Nunito-Regular',
+    color: '#212429',
+    fontSize: 13,
   },
 });
 export default SignUpPage;

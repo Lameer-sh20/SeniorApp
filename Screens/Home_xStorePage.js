@@ -7,25 +7,14 @@ import {
   AsyncStorage,
 } from 'react-native';
 import colors from '../assets/colors/Colors';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import UserHeader from '../Components/UserHeader';
 
-function Home_noStorePage() {
+function Home_xStorePage() {
   const navigation = useNavigation();
-  //const route = useRoute();
+  const route = useRoute();
   const [name, setName] = useState('');
-
-  //const {phone, name, password, OTP} = route.params;
-
-  // const passData = () => {
-  //   navigation.navigate('Home_xSupermarketPage', {
-  //     name: name,
-  //     phone: phone,
-  //     password: password,
-  //     otp: OTP,
-  //   });
-  // };
 
   useEffect(() => {
     getData();
@@ -42,25 +31,23 @@ function Home_noStorePage() {
       // error reading value
     }
   };
-
   return (
     <View style={styles.pageContainer}>
       <UserHeader name={name}> </UserHeader>
+      <View style={styles.textContainer}>
+        <Text style={styles.first}>Latest Offers</Text>
+      </View>
       <View style={styles.Container}>
-        {/**click to choose store */}
-        <TouchableOpacity
-          style={styles.Container}
-          onPress={() => navigation.navigate('StoresMenu')}>
-          <Icons name="not-listed-location" size={160} color="#c4c4c4" />
+        <TouchableOpacity onPress={() => navigation.navigate('PersonalMenu')}>
           <Text style={styles.text}>
-            Click to choose the Store you want to shop from
+            here should be the store menu
+            {'\n'}click to go to personal
           </Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   pagecontainer: {
     flex: 1,
@@ -68,9 +55,9 @@ const styles = StyleSheet.create({
   Container: {
     marginTop: 90,
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
+    //justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
-    //justifyContent: 'center',
   },
   text: {
     marginTop: 5,
@@ -78,5 +65,26 @@ const styles = StyleSheet.create({
     color: '#212429',
     fontSize: 16,
   },
+  textContainer: {
+    height: 45,
+    backgroundColor: '#FECD42',
+    borderRadius: 15,
+    //borderColor: colors.mainYellow,
+    //borderWidth: 0.5,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    //paddingVertical: 10,
+    //paddingHorizontal: 10,
+    //marginVertical: 9,
+    margin: 9,
+  },
+  first: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 17,
+    fontFamily: 'Nunito-Bold',
+  },
 });
-export default Home_noStorePage;
+export default Home_xStorePage;
