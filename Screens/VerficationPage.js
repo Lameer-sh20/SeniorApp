@@ -7,10 +7,10 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Alert,
-  AsyncStorage,
 } from 'react-native';
 import colors from '../assets/colors/Colors';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import components
 import SignHeader from '../Components/SignHeader';
@@ -42,7 +42,7 @@ function VerficationPage() {
         setPhone(JSON.parse(value).phone);
         setName(JSON.parse(value).name);
         setPassword(JSON.parse(value).password);
-        console.warn(value);
+        console.warn(JSON.parse(value).phone);
       }
     } catch (e) {
       // error reading value
@@ -99,6 +99,7 @@ function VerficationPage() {
             });
         } else {
           Alert.alert('wrong otp');
+          console.warn('phone is', phone);
         }
       })
       .catch(error => {
@@ -114,7 +115,7 @@ function VerficationPage() {
       />
       <View style={styles.textContainer}>
         <Text style={styles.text}>
-          A confirmation code has been sent to your number {'\n'} Please enter
+          A confirmation code has been sent to your {phone} {'\n'} Please enter
           it below
         </Text>
       </View>

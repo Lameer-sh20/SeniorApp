@@ -3,7 +3,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Required -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <!-- Include this only if you are planning to use the microphone for video recording -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
       android:name=".MainApplication"
@@ -12,6 +19,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+      
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -24,5 +32,8 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBKaqXFY6bE4wK6JR91nRJA_Jnq63dfzt0"/>
     </application>
 </manifest>

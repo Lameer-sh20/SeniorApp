@@ -1,6 +1,5 @@
 import {Text, View, StyleSheet, Button, TouchableOpacity} from 'react-native';
 import React from 'react';
-import BottomBar from '../Components/BottomBar';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
 function MarketsPage() {

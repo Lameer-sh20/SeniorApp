@@ -36,7 +36,7 @@ function Home_noStorePage() {
       const value = await AsyncStorage.getItem('UserData');
       if (value !== null) {
         setName(JSON.parse(value).name);
-        console.warn(JSON.parse(value).name);
+        console.warn('the name is ', value);
       }
     } catch (e) {
       // error reading value

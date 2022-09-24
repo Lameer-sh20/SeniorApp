@@ -37,18 +37,20 @@ function ResetPassPage() {
         onPress={() => navigation.navigate('SignUpPage')}
       />
       <View style={styles.textContainer}>
-        <Text style={styles.text}>Please enter your new password</Text>
+        <Text style={styles.text}>
+          Please complete the following information
+          {'\n'}
+          to reset your password
+        </Text>
       </View>
       <View style={styles.inputsContainer} behavior="padding">
+        <InputBox
+          placeholder="05xxxxxxxx"
+          value={phone}
+          onChangeText={text => setPhone(text)}
+        />
         <InputBox
           placeholder="New password"
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
-      </View>
-      <View style={styles.inputsContainer} behavior="padding">
-        <InputBox
-          placeholder="Reenter new password"
           value={password}
           onChangeText={text => setPassword(text)}
         />
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 50,
-    alignItems: 'center',
+    textAlign: 'center',
     justifyContent: 'center',
 
     fontFamily: 'Nunito-Regular',

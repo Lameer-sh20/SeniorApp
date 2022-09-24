@@ -1,28 +1,72 @@
-import * as React from 'react';
-import {Text, View, StyleSheet, Button} from 'react-native';
+// import React in our code
+import React, {Component} from 'react';
+import {StyleSheet, View, Alert} from 'react-native';
+import {RNCamera} from 'react-native-camera';
+
+// import CameraKitCameraScreen
 import colors from '../assets/colors/Colors';
-//import {Button} from 'react-native-elemets';
-import {useNavigation} from '@react-navigation/native';
 
-const Camera = () => {
-  const navigation = useNavigation();
-  return (
-    <View>
-      <Text style={styles.text}>here should be Camera</Text>
-      <Button
-        title="go to Main page"
-        onPress={() => navigation.navigate('Home_noStorePage')}
-      />
-    </View>
+class CameraPage extends Component {
+  state = {
+    barcodes: [],
+  };
+
+  barcodeRecognized = ({barcodes}) => {
+    barcodes.forEach(barcode => console.log(barcode.data));
+    this.setState({barcodes});
+  };
+
+  renderBarcodes = () => (
+    <View>{this.state.barcodes.map(this.renderBarcode)}</View>
   );
-};
 
-export default Camera;
+  renderBarcode = ({data}) =>
+    Alert.alert(
+      'Scanned Data',
+      data,
+      [
+        {
+          text: 'Okay',
+          onPress: () => console.log('Okay Pressed'),
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
+    );
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <RNCamera
+          ref={ref => {
+            this.camera = ref;
+          }}
+          style={styles.scanner}
+          onGoogleVisionBarcodesDetected={this.barcodeRecognized}>
+          {this.renderBarcodes}
+        </RNCamera>
+        {/* <RNCamera
+          style={{flex: 1, alignItems: 'center'}}
+          ref={ref => {
+            this.camera = ref;
+          }}
+        /> */}
+      </View>
+    );
+  }
+}
+
+export default CameraPage;
 
 const styles = StyleSheet.create({
-  text: {
-    fontFamily: 'Nunito-Bold',
-    color: colors.blue,
-    fontSize: 17,
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'black',
+  },
+  scanner: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
 });

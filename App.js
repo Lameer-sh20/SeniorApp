@@ -15,11 +15,15 @@ import VerficationPage from './Screens/VerficationPage';
 import Home_noStorePage from './Screens/Home-noStorePage';
 import StoresMenu from './Screens/StoresMenu';
 import Home_xStorePage from './Screens/Home_xStorePage';
+import StorePage from './Screens/StorePage';
 import PersonalMenu from './Screens/PersonalMenu';
 import UserInfo from './Screens/UserInfo';
 import UserCards from './Screens/UserCards';
+import AddCard from './Screens/AddCard';
 import UserInvoices from './Screens/UserInvoices';
 import UserCart from './Screens/UserCart';
+import CameraPage from './Screens/Camera';
+import Location from './Screens/Location';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +36,7 @@ function App() {
   return (
     <NavigationContainer theme={navTheme}>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        {/*<Stack.Screen
           name="MainPage"
           component={MainPage}
           options={{headerShown: false}}
@@ -41,7 +45,7 @@ function App() {
           name="SignUpPage"
           component={SignUpPage}
           options={{headerShown: false}}
-        /> 
+        />
         <Stack.Screen
           name="SignInPage"
           component={SignInPage}
@@ -56,8 +60,18 @@ function App() {
           name="ResetPassPage"
           component={ResetPassPage}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Location"
+          component={Location}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CameraPage"
+          component={CameraPage}
+          options={{headerShown: false}}
         />*/}
-        {/*<Stack.Screen
+        <Stack.Screen
           name="Home_noStorePage"
           component={Home_noStorePage}
           options={{headerShown: false}}
@@ -67,16 +81,16 @@ function App() {
           component={StoresMenu}
           options={{headerShown: false}}
         />
-         <Stack.Screen
-          name="MarketsPage"
-          component={MarketsPage}
-          options={{headerShown: false}}
-        /> 
         <Stack.Screen
           name="Home_xStorePage"
           component={Home_xStorePage}
           options={{headerShown: false}}
-        />*/}
+        />
+        <Stack.Screen
+          name="StorePage"
+          component={StorePage}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="PersonalMenu"
           component={PersonalMenu}
@@ -90,6 +104,11 @@ function App() {
         <Stack.Screen
           name="UserCards"
           component={UserCards}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddCard"
+          component={AddCard}
           options={{headerShown: false}}
         />
         <Stack.Screen

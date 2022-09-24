@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   button: {
-    backgroundColor: colors.mainYellow,
+    backgroundColor: '#FFEB83',
     padding: 15,
     borderRadius: 10,
     //borderColor: colors.mainYellow,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Nunito-Bold',
-    color: 'black',
+    color: '#484038',
     //fontWeight: '700',
     fontSize: 17,
   },

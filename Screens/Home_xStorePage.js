@@ -39,10 +39,7 @@ function Home_xStorePage() {
       </View>
       <View style={styles.Container}>
         <TouchableOpacity onPress={() => navigation.navigate('PersonalMenu')}>
-          <Text style={styles.text}>
-            here should be the store menu
-            {'\n'}click to go to personal
-          </Text>
+          <Text style={styles.text}>Store Items</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -1,16 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import colors from '../assets/colors/Colors';
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 // import components
 import SignHeader from '../Components/SignHeader';
@@ -25,46 +18,74 @@ function SignInPage() {
   const [password, setPassword] = useState('');
 
   //functions
+  useEffect(() => {
+    setData();
+  });
+  const setData = async () => {
+    if (phone.length == 0 || password.length == 0) {
+      //console.warn('fill the required info');
+    } else {
+      try {
+        const user = JSON.stringify({
+          name: name,
+          phone: phone,
+          password: password,
+        });
+        //await AsyncStorage.setItem('UserData', JSON.stringify(user));
+        await AsyncStorage.setItem('UserData', user);
+        console.log('account created successfully!', name);
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+  };
 
-  // const setData = async () => {
-  //   if (name.length == 0 || phone.length == 0 || password.length == 0) {
-  //     Alert.alert('Warning!', 'Please fill the required info');
-  //     console.warn(name);
-  //   } else {
-  //     try {
-  //       const user = JSON.stringify({
-  //         name: name,
-  //         phone: phone,
-  //         password: password,
-  //       });
-  //       //await AsyncStorage.setItem('UserData', JSON.stringify(user));
-  //       await AsyncStorage.setItem('UserData', user);
-  //       console.warn('fdhdfhdf');
-  //       Alert.alert('account created successfully!');
-  //       navigation.navigate('VerficationPage');
-  //     } catch (error) {
-  //       console.warn(error);
-  //     }
-  //   }
-  // };
-
-  // const passData = () => {
-  //   if (name.length == 0 || phone.length == 0 || password.length == 0) {
-  //     Alert.alert('Warning!', 'Please fill the required info');
-  //   } else {
-  //     try {
-  //       navigation.navigate('OtpPage', {
-  //         name: name,
-  //         phone: phone,
-  //         password: password,
-  //       });
-  //     } catch (error) {
-  //       console.warn(error);
-  //     }
-  //   }
-  // };
-
-  //const submitData = () => {};
+  const submitData = () => {
+    if (password.length <= 3 && password.length > 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Alert!',
+        text2: 'Password must be at least 6 charecters containing 1 letter',
+        visibilityTime: 4000,
+      });
+    } else if (phone.length == 0 || password.length == 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Alert!',
+        text2: 'Please fill the required information',
+        visibilityTime: 4000,
+      });
+      //console.warn('fill the required info');
+    } else {
+      fetch('http://10.0.2.2:3000/user/login', {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({phone, password}),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status == null) {
+            Toast.show({
+              type: 'error',
+              text1: 'Alert!',
+              text2: data.message,
+              visibilityTime: 5000,
+            });
+            //console.error('data is', data);
+          } else {
+            const user = JSON.parse(JSON.stringify(data.data.user));
+            console.log('name is', user.name);
+            setName(user.name);
+            navigation.navigate('Home_noStorePage');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  };
 
   // actual page flow
   return (
@@ -75,9 +96,14 @@ function SignInPage() {
       />
       <View style={styles.textContainer}>
         <Text style={styles.text}>
-          Please enter your phone number and password
+          Please enter your phone number and {name}password
         </Text>
       </View>
+      <Toast
+        ref={ref => {
+          Toast.setRef(ref);
+        }}
+      />
       <View style={styles.inputsContainer} behavior="padding">
         <InputBox
           placeholder="05xxxxxxxx"
@@ -86,12 +112,18 @@ function SignInPage() {
         />
         <InputBox
           placeholder="Password"
-          value={phone}
-          onChangeText={text => setPhone(text)}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          secureTextEntry={true}
         />
       </View>
       <View style={styles.buttonContainer}>
-        <LongButton text="Countinue" onPress={'...'} />
+        <LongButton
+          text="Countinue"
+          onPress={() => {
+            submitData();
+          }}
+        />
       </View>
       <View style={styles.questionContainer}>
         <Text style={styles.questionstext}>Forgot your password? </Text>

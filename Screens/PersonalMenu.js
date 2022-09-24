@@ -16,7 +16,7 @@ function PersonalMenu() {
     <View>
       <YellowHeader
         text="Personal"
-        onPress={() => navigation.navigate('Home_noStorePage')}
+        onPress={() => navigation.navigate('StorePage')}
       />
       {/*profile*/}
       <TouchableOpacity

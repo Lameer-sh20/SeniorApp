@@ -1,20 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import colors from '../assets/colors/Colors';
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-
-//import {AsyncStorage} from '@react-native-async-storage/async-storage';
 
 // import components
 import SignHeader from '../Components/SignHeader';
@@ -30,7 +19,7 @@ function SignUpPage() {
   //functions
   const setData = async () => {
     if (name.length == 0 || phone.length == 0 || password.length == 0) {
-      console.warn('fill the required info');
+      //console.warn('fill the required info');
     } else {
       try {
         const user = JSON.stringify({
@@ -65,14 +54,21 @@ function SignUpPage() {
   // };
 
   const submitData = () => {
-    if (name.length == 0 || phone.length == 0 || password.length == 0) {
+    if (password.length <= 3 && password.length > 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Alert!',
+        text2: 'Password must be at least 6 charecters containing 1 letter',
+        visibilityTime: 4000,
+      });
+    } else if (name.length == 0 || phone.length == 0 || password.length == 0) {
       Toast.show({
         type: 'error',
         text1: 'Alert!',
         text2: 'Please fill the required information',
         visibilityTime: 4000,
       });
-      console.warn('fill the required info');
+      //console.warn('fill the required info');
     } else {
       fetch('http://10.0.2.2:3000/user/getUserByPhone', {
         method: 'POST', // or 'PUT'
@@ -106,7 +102,7 @@ function SignUpPage() {
               type: 'error',
               text1: 'Alert!',
               text2: data.message,
-              visibilityTime: 4000,
+              visibilityTime: 5000,
             });
             //Alert.alert('Make login');
           }

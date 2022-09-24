@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   AsyncStorage,
+  ScrollView,
 } from 'react-native';
 import colors from '../assets/colors/Colors';
 import {useNavigation} from '@react-navigation/native';
@@ -31,35 +32,37 @@ function StoresMenu() {
 
   return (
     <View>
-      <SignHeader
-        text="Stores"
-        onPress={() => navigation.navigate('Home_noStorePage')}
-      />
-      <View>
-        <Text style={styles.text}>Choose the store you are shopping at</Text>
-      </View>
-      <View style={styles.itemsContainer}>
-        <TouchableOpacity
-          style={styles.item}
-          onPress={() => navigation.navigate('Home_xStorePage')}>
-          <View style={styles.itemInfo}>
-            <Text>logo</Text>
-            <Text style={styles.itemText}>store name</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.item}>
-          <View style={styles.itemInfo}>
-            <Text>logo</Text>
-            <Text style={styles.itemText}>store name</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.item}>
-          <View style={styles.itemInfo}>
-            <Text>logo</Text>
-            <Text style={styles.itemText}>store name</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      <ScrollView>
+        <SignHeader
+          text="Stores"
+          onPress={() => navigation.navigate('Home_noStorePage')}
+        />
+        <View>
+          <Text style={styles.text}>Choose the store you are shopping at</Text>
+        </View>
+        <View style={styles.itemsContainer}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => navigation.navigate('StorePage')}>
+            <View style={styles.itemInfo}>
+              <Text>logo</Text>
+              <Text style={styles.itemText}>store name</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.item}>
+            <View style={styles.itemInfo}>
+              <Text>logo</Text>
+              <Text style={styles.itemText}>store name</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.item}>
+            <View style={styles.itemInfo}>
+              <Text>logo</Text>
+              <Text style={styles.itemText}>store name</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }

@@ -7,16 +7,11 @@ import {
   AsyncStorage,
 } from 'react-native';
 import colors from '../assets/colors/Colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useNavigation} from '@react-navigation/native';
 
 import YellowHeader from '../Components/YellowHeader';
-import InputBox from '../Components/InputBox';
-import LongButton from '../Components/LongButton';
 
 function UserCards() {
   const navigation = useNavigation();
@@ -26,10 +21,42 @@ function UserCards() {
 
   return (
     <View>
-      <Text>this page is for user's credit cards</Text>
+      {/*header*/}
+      <YellowHeader
+        text="Credit Cards"
+        onPress={() => navigation.navigate('PersonalMenu')}
+      />
+      {/*alert icon*/}
+      <View style={styles.Container}>
+        {/**click to add card */}
+        <TouchableOpacity
+          style={styles.Container}
+          onPress={() => navigation.navigate('AddCard')}>
+          <MaterialCommunityIcons
+            name="alert-circle"
+            size={160}
+            color="#c4c4c4"
+          />
+          <Text style={styles.text}>Click to add new Credit Card</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  Container: {
+    marginTop: 90,
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    //justifyContent: 'center',
+  },
+  text: {
+    marginTop: 5,
+    fontFamily: 'Nunito-Regular',
+    color: '#212429',
+    fontSize: 16,
+  },
+});
 export default UserCards;

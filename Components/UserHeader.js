@@ -18,7 +18,7 @@ function UserHeader({name}) {
             source={require('../assets/Images/location.png')}
             style={styles.imageLocation}
           />
-          <Text style={styles.textLocation}> xxxx Supermarket</Text>
+          <Text style={styles.textLocation}> xxxx store</Text>
         </TouchableOpacity>
         {/* name & cart container */}
         <View style={styles.name_cartContainer}>
